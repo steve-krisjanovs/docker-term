@@ -93,6 +93,8 @@ As you can see from the above connection methods, myapp.py is the console app th
 
 Feel free to modify login-app.sh, but **ALWAYS** add an "exit" line at the end of your script. If you don't, when your custom app exits (e.g. myapp.py in this case), the user will drop to a root shell session in the container. You don't want that :)
 
+If you need to locally shell into the container for debugging/troubleshooting (e.g. docker run -it...), specify a shell OTHER than bash (e.g. sh). Since the container's .bashrc file for the root account directs the user to the console app then exists, you'll need to use a different shell to dive in 
+
 # Screenshots
 
 Sample screenshot of myapp.py in action:
