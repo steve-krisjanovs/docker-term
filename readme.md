@@ -1,3 +1,19 @@
+# Synopsis
+
+This repo serves as a blank-slate for developers who are interested in containerizing VT100 Telnet/SSH applications. Anyone interested in this approach is more than welcome to fork this repository and customize it to their own needs. PR's however are always welcome!
+
+When you fork/customize/build this container, you will be able to easily create telnet/SSH applications and tailor them to your own needs. 
+
+Simply create your app as you would create any other console app (e.g. node.js, .net core, etc) and let this container do the heavy lifting to easily and seamlessly service that app to your end users. 
+
+Some sample use cases for building such text-based terminal applications include (but not limited to):
+
+* Inventories / Cycle Counts
+* Warehouse Management Systems (shipping/receiving/pick/pack/putaway/etc.)
+* Item inquiries (e.g. scan a barcode to inquire price/UOM/description/quantity on-hand/etc.)
+* EDI outbound scanning (e.g. ASC X12 856 + MH10 labels)
+* Gate checkout / theft prevention
+
 # Introduction
 
 I developed this docker container where I saw a need for businesses who require a text-based VTxxx interface to easily customize and automate their operations (e.g. text-based VT100 data capture scanner guns, WindowsMobile/CE rugged handheld devices with a VT100 client, etc.). Many businesses have a substantial investment in these perfectly-functional older devices, but there appears to be a growing trend in the enterprise world where businesses who have such datacapture requirements are alse expected to ditch their substantial legacy investment for something new just for the sake of something new. 
@@ -8,17 +24,9 @@ Developing a warehouse HTML5 app for Windows CE is an uphill battle (CE/Webkit-p
 
 By taking an old-school approach with a modern twist (e.g. VTxxx telnet/ssh applications hosted in a docker container) my goal is for developers to truly achieve create code that is *write once / run anywhere* (so long as the device has decent VT escape sequence support!).
 
-By forking and customizing this container to your needs, you can create any console-based application in any language to your liking (presently this container supports node.js/typescript, .net core, and python) and then expose that application via both telnet (port 10023:23) and ssh (port 10022:22) without having to fuss with coding your own TCP server socket layer plumbing. Why reinvent the wheel when linux has mature remote shell capabilities via openssh and telnetd :) Containering solutions such as this only seemed natural. 
+By forking and customizing this container to your needs, you can create any console-based application in any language to your liking (presently this container supports node.js/typescript, .net core, and python) and then expose that application via both telnet (port 10023:23) and ssh (port 10022:22) without having to fuss with coding your own TCP server socket layer plumbing. Why reinvent the wheel when linux has mature remote shell capabilities via openssh and telnetd :) Containerizing solutions such as this only seemed natural. 
 
 So long as you have a device that can connect via SSH or Telnet, I hope this containerized solution solves some needs for you!
-
-Some sample use cases including but not limited to:
-
-* Inventories / Cycle Counts
-* Warehouse Management Systems (shipping/receiving/pick/pack/putaway/etc.)
-* Item inquiries (e.g. scan a barcode to inquire price/UOM/description/quantity on-hand/etc.)
-* EDI outbound scanning (e.g. ASC X12 856 + MH10 labels)
-* Gate checkout / theft prevention
 
 # Technical details
 
