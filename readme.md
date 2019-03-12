@@ -35,6 +35,8 @@ This debian-based docker container will install the following programming langua
 * Install node.js 10.x LTS + typescript
 * Install .NET Core 2.2 SDK
 * Install Python 2.7
+* Install Powershel Core (pwsh)
+* Install dosemu (for running dos applications)
 * Install git (in case you prefer to git clone your app into the container @ build)
 * Install misc. utilities such as curl, wget, dialog, etc.
 
