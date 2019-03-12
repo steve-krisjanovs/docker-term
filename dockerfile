@@ -10,10 +10,10 @@ EXPOSE 22
 #followed by an infinate keepalive loop to keep the container 
 #running and is thus the script run in the dockerfile CMD
 #------------------------------------------------------------
-ENV APPDIR /root
-WORKDIR ${APPDIR}
+ENV ROOTDIR /root
+WORKDIR ${ROOTDIR}
 ENV STARTUP_SCRIPT keepalive.sh
-ENV STARTUP_APP ${APPDIR}/${STARTUP_SCRIPT}
+ENV STARTUP_APP ${ROOTDIR}/${STARTUP_SCRIPT}
 COPY ${STARTUP_SCRIPT} .
 
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
@@ -41,6 +41,30 @@ COPY telnet /etc/xinetd.d/telnet
 #--------------------------------------------------------------------------
 RUN apt-get install -y git
 
+#prep app directories (onr per language)
+#---------------------------------------
+#RUN mkdir -p ${ROOTDIR}/app/dos/c    
+RUN mkdir -p ${ROOTDIR}/.dosemu/drive_c
+RUN mkdir -p ${ROOTDIR}/app/python
+RUN mkdir -p ${ROOTDIR}/app/nodejs
+RUN mkdir -p ${ROOTDIR}/app/dotnetcore
+RUN mkdir -p ${ROOTDIR}/app/powershellcore
+
+#install dosemu (for legacy dos ANSI apps) - not working (Package 'dosemu' has no installation candidate)
+#-----------------------------------------
+#RUN apt-get update && apt-get install -y dosemu (doesn't work. get "Package 'dosemu' has no installation candidate")
+RUN apt-get install -y wget
+RUN apt-get install -y libasound2
+RUN apt-get install -y libslang2
+RUN apt-get install -y libsndfile1
+RUN apt-get install -y libxxf86vm1
+RUN apt-get install -y libsdl1.2debian
+RUN apt-get install -y xfonts-utils
+ENV DOSEMU_DEB dosemu_1.4.0.7+20130105+b028d3f-2+b1_amd64.deb
+RUN wget -q http://http.us.debian.org/debian/pool/contrib/d/dosemu/${DOSEMU_DEB}
+RUN dpkg -i ./${DOSEMU_DEB}
+RUN rm ./${DOSEMU_DEB}
+
 #install node.js 10.x LTS + typescript
 #-------------------------------------
 RUN apt-get install -y curl software-properties-common wget gnupg2
@@ -62,6 +86,20 @@ RUN apt-get install -y dotnet-sdk-2.2
 #install python 2.7
 #------------------
 RUN apt-get install -y python2.7 python-pip
+
+#install powershell core for debian 9
+#------------------------------------
+# Install system components
+RUN apt-get update
+RUN apt-get install curl gnupg apt-transport-https
+# Import the public repository GPG keys
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+# Register the Microsoft Product feed
+RUN sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
+# Update the list of products
+RUN apt-get update
+# Install PowerShell
+RUN apt-get install -y powershell
 
 #----------------------------------------------------------------------------------------
 #BEGIN INSTALL APP
@@ -87,13 +125,38 @@ RUN apt-get install -y python2.7 python-pip
 #   docker run -it into the container using sh instead. 
 #----------------------------------------------------------------------------------------
 ENV SHELL_LOGIN_SCRIPT login-app.sh
-ENV SHELL_LOGIN_PATH ${APPDIR}/${SHELL_LOGIN_SCRIPT}
+ENV SHELL_LOGIN_PATH ${ROOTDIR}/${SHELL_LOGIN_SCRIPT}
 COPY ${SHELL_LOGIN_SCRIPT} .
 COPY .bashrc .
-COPY app/myapp.py .
+
+#copy over application demos
+#---------------------------
+
+#dosemu (doesn't work yet)
+COPY app/dos/c/myapp.bat ${ROOTDIR}/.dosemu/drive_c/myapp.bat
+
+#Python
+COPY app/python/myapp.py ${ROOTDIR}/app/python/myapp.py
 RUN pip install blessed
+
+#node.js
+COPY app/nodejs/myapp.js ${ROOTDIR}/app/nodejs/myapp.js
+COPY app/nodejs/package.json ${ROOTDIR}/app/nodejs/package.json
+WORKDIR ${ROOTDIR}/app/nodejs/
+RUN npm install
+
+#dotnet core
+COPY app/dotnetcore/myapp.csproj ${ROOTDIR}/app/dotnetcore/myapp.csproj
+COPY app/dotnetcore/myapp.cs ${ROOTDIR}/app/dotnetcore/myapp.cs
+WORKDIR ${ROOTDIR}/app/dotnetcore
+RUN dotnet build
+
+#powershell core
+COPY app/powershellcore/myapp.ps1 ${ROOTDIR}/app/powershellcore/myapp.ps1
+
 #---------------------------------------------------------------------------------------
 #END INSTALL APP
 #---------------------------------------------------------------------------------------
 
+WORKDIR ${ROOTDIR}
 CMD "${STARTUP_APP}"
