@@ -40,7 +40,15 @@ This debian-based docker container will install the following programming langua
 
 The sections for each programming-language install is well documented in the dockerfile. Feel free to remove the languages you don't need, or add others to suit your needs (e.g. Mono, Java, Perl, Ruby).
 
-Once these are installed, the dockerfile then installs a simple "hello world" app I wrote to demonstrate the container in action ("myapp.py"). See the bottom section of the dockerfile, this is where you will benefit most in customizing this container to your needs. 
+Once these are installed, the dockerfile then installs a several "hello world" apps I wrote to demonstrate the container in action. See the bottom section of the dockerfile, this is where you will benefit most in customizing this container to your needs.
+
+Currently there are several "htllo world" apps included in this dockerfile for the following
+
+* /dos/c/myapp.bat: "hello world" in dosemu
+* /dotnetcore/myapp.cs: "hello world" in dotnet core 2.2
+* /nodejs/myapp.js: "hello world" in node.js
+* /powershellcore/myapp.ps1: "hello world" in powershell core
+* /python/myapp.py: "hello world" app in python
 
 Refer to runcontainer.bat and runcontainer.sh for windows and linux examples on building the container. 
 
@@ -73,10 +81,10 @@ Feel free to fork this repository and customize it to your needs.
 
 Depending on how a user connects into your app, the workflow is as follows:
 
-* For SSH: ssh connect >> ssh login >> .bashrc >> login-app.sh >> myapp.py >> exit
-* For Telnet: telnet connect (login bypass) >> login-app.sh >> myapp.py >> exit
+* For SSH: ssh connect >> ssh login >> .bashrc >> login-app.sh >> myapp.* >> exit
+* For Telnet: telnet connect (login bypass) >> login-app.sh >> myapp.* >> exit
 
-As you can see from the above connection methods, myapp.py is the console app that is run. 
+As you can see from the above connection methods, myapp.* is the console app that is run. 
 
 # File contents
 
@@ -87,11 +95,13 @@ As you can see from the above connection methods, myapp.py is the console app th
 * runcontainer.bat and runcontainer.sh: windows and linux examples to run the container
 * sshd_config: allows root ssh shell login and prohibits sftp access to the container
 * telnet: configuration file for telnetd. Do not modify. Note the "server_args" parameter which instructs telnet to skip user login and immediately launch /root/login-app.sh
-* myapp.py: This is a simple python "hello world" app I wrote that the user sees when they telnet or ssh into the app service (forgive the python simplicity. I'm a .net and node developer!). The user is prompted to hit ENTER to exit. When pressed, the app exists and the ssh/telnet connection is closed. 
+* myapp.*: various "hello world" examples in various languages 
+
+When pressed, the app exists and the ssh/telnet connection is closed. 
 
 # Important notes
 
-Feel free to modify login-app.sh, but **ALWAYS** add an "exit" line at the end of your script. If you don't, when your custom app exits (e.g. myapp.py in this case), the user will drop to a root shell session in the container. You don't want that :)
+Feel free to modify login-app.sh, but **ALWAYS** add an "exit" line at the end of your script. If you don't, when your custom app exits, the user will drop to a root shell session in the container. You don't want that :)
 
 If you need to locally shell into the container for debugging/troubleshooting (e.g. docker run -it...), specify a shell OTHER than bash (e.g. sh). Since the container's .bashrc file for the root account directs the user to the console app then exists, you'll need to use a different shell to dive in 
 

@@ -43,15 +43,27 @@ RUN apt-get install -y git
 
 #prep app directories (onr per language)
 #---------------------------------------
-RUN mkdir -p ${ROOTDIR}/app/dosbox/c    
+#RUN mkdir -p ${ROOTDIR}/app/dos/c    
+RUN mkdir -p ${ROOTDIR}/.dosemu/drive_c
 RUN mkdir -p ${ROOTDIR}/app/python
 RUN mkdir -p ${ROOTDIR}/app/nodejs
 RUN mkdir -p ${ROOTDIR}/app/dotnetcore
 RUN mkdir -p ${ROOTDIR}/app/powershellcore
 
-#install DOSBox (for legacy dos ANSI apps)
+#install dosemu (for legacy dos ANSI apps) - not working (Package 'dosemu' has no installation candidate)
 #-----------------------------------------
-RUN apt-get install -y dosbox
+#RUN apt-get update && apt-get install -y dosemu (doesn't work. get "Package 'dosemu' has no installation candidate")
+RUN apt-get install -y wget
+RUN apt-get install -y libasound2
+RUN apt-get install -y libslang2
+RUN apt-get install -y libsndfile1
+RUN apt-get install -y libxxf86vm1
+RUN apt-get install -y libsdl1.2debian
+RUN apt-get install -y xfonts-utils
+ENV DOSEMU_DEB dosemu_1.4.0.7+20130105+b028d3f-2+b1_amd64.deb
+RUN wget -q http://http.us.debian.org/debian/pool/contrib/d/dosemu/${DOSEMU_DEB}
+RUN dpkg -i ./${DOSEMU_DEB}
+RUN rm ./${DOSEMU_DEB}
 
 #install node.js 10.x LTS + typescript
 #-------------------------------------
@@ -120,8 +132,8 @@ COPY .bashrc .
 #copy over application demos
 #---------------------------
 
-#dosbox (doesn't work yet)
-COPY app/dosbox/c/myapp.bat ${ROOTDIR}/app/dosbox/c/myapp.bat
+#dosemu (doesn't work yet)
+COPY app/dos/c/myapp.bat ${ROOTDIR}/.dosemu/drive_c/myapp.bat
 
 #Python
 COPY app/python/myapp.py ${ROOTDIR}/app/python/myapp.py
@@ -134,7 +146,7 @@ WORKDIR ${ROOTDIR}/app/nodejs/
 RUN npm install
 
 #dotnet core
-COPY app/dotnetcore/dotnetcore.csproj ${ROOTDIR}/app/dotnetcore/dotnetcore.csproj
+COPY app/dotnetcore/myapp.csproj ${ROOTDIR}/app/dotnetcore/myapp.csproj
 COPY app/dotnetcore/myapp.cs ${ROOTDIR}/app/dotnetcore/myapp.cs
 WORKDIR ${ROOTDIR}/app/dotnetcore
 RUN dotnet build
