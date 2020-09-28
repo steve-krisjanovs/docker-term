@@ -9,6 +9,6 @@ socket_type = stream
 wait = no
 user = root
 server = /usr/sbin/in.telnetd
-server_args = -L /root/login-app.sh
+server_args = -L /root/my/login.sh
 log_on_failure += USERID
 }

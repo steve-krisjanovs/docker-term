@@ -2,7 +2,7 @@
 
 namespace dotnetcore
 {
-    class myapp
+    class dotnetapp
     {
         static void Main(string[] args)
         {

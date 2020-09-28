@@ -46,7 +46,7 @@ Once these are installed, the dockerfile then installs a several "hello world" a
 
 Currently there are several "htllo world" apps included in this dockerfile for the following
 
-* /dos/c/myapp.bat: "hello world" in dosemu
+* /dos/myapp.bat: "hello world" in dosemu
 * /dotnetcore/myapp.cs: "hello world" in dotnet core 2.2
 * /nodejs/myapp.js: "hello world" in node.js
 * /powershellcore/myapp.ps1: "hello world" in powershell core

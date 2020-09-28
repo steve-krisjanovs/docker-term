@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#set root password
-echo root:${ROOT_PASSWORD} | /usr/sbin/chpasswd
-
 #init.sh:   initializes environment needed for app (e.g. install NPM modules for app, etc)
 #login.sh:  script runs once a telnet/ssh session is established + launches the app to remote
 
@@ -28,6 +25,3 @@ echo "keepalive.sh: Telnet started"
 echo "keepalive.sh: starting SSH..."
 /usr/sbin/sshd
 echo "keepalive.sh: SSH started"
-
-echo "keepalive.sh: entering keep-alive loop. CTRL-C to abort"
-while :; do sleep 1; done

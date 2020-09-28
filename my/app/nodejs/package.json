@@ -1,8 +1,8 @@
 {
-  "name": "myapp",
+  "name": "nodeapp",
   "version": "1.0.0",
   "description": "sample hello world app",
-  "main": "myapp.js",
+  "main": "nodeapp.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
