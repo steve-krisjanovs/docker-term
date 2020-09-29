@@ -20,6 +20,7 @@ COPY docker-assets/keepalive-debug.sh .
 RUN chmod +x /root/keepalive.sh
 RUN chmod +x /root/keepalive-debug.sh
 
+#install telnetd, ssh, dos2unix
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN apt-get install -y telnetd xinetd telnet openssh-server
 RUN apt-get install -y dos2unix
