@@ -22,8 +22,8 @@ It's my hope that this container serves a niche for those who cannot upgrade the
 # Usage
 
 ```
-docker pull docker-term
-docker run --env ROOT_PASSWORD=pass1234 --volume=C:\my:/root/my --detach --rm -p 10023:23 -p 10022:22 --name docker-term docker-term
+docker pull docker pull stevekrisjanovs/docker-term
+docker run --env ROOT_PASSWORD=pass1234 --volume=C:\my:/root/my --detach --rm -p 10023:23 -p 10022:22 --name docker-term stevekrisjanovs/docker-term
 ```
 
 The above command does the following:
