@@ -75,7 +75,7 @@ Depending on how a user connects into your app, the workflow is as follows:
 
 # Screenshots
 
-Sample screenshot of a sample /root/my/login.sh in action:
+Sample screenshot of a sample /root/my/login.sh in action when establishing a connection to telnet port 10023:
 
 ![Screenshot](screenshot.png)
 
