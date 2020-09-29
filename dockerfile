@@ -15,8 +15,8 @@ VOLUME ["/root/my"]
 #running and is thus the script run in the dockerfile CMD
 #------------------------------------------------------------
 WORKDIR /root
-COPY keepalive.sh .
-COPY keepalive-debug.sh .
+COPY docker-assets/keepalive.sh .
+COPY docker-assets/keepalive-debug.sh .
 RUN chmod +x /root/keepalive.sh
 RUN chmod +x /root/keepalive-debug.sh
 
@@ -29,7 +29,7 @@ RUN apt-get install -y dos2unix
 #Users can only connect via a bash session when connecting from ssh
 #----------------------------------------------------------------------------
 RUN mkdir /var/run/sshd
-COPY sshd_config /etc/ssh/sshd_config
+COPY docker-assets/sshd_config /etc/ssh/sshd_config
 
 #SSH login fix. Otherwise user is kicked off after login
 #-------------------------------------------------------
@@ -39,12 +39,12 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 #i.e. when connected via telnet, user will log in as root, bypassing user/password prompt,
 #and launch a specified specified script in /etc/xinetd.d/telnet >> /root/my/login.sh
 #---------------------------------------------------------------------------------------------------
-COPY telnet /etc/xinetd.d/telnet
+COPY docker-assets/telnet /etc/xinetd.d/telnet
 RUN dos2unix /etc/xinetd.d/telnet
 
 #copy over .bashrc to retrict sftp access, etc.
 #----------------------------------------------
-COPY .bashrc .
+COPY docker-assets/.bashrc .
 RUN dos2unix /root/.bashrc
 
 #make sure that keepalive.sh is in unix LF format
