@@ -31,9 +31,9 @@ The above command does the following:
 * expose telnet port 23 as host port 10023
 * expose SSH port 22 as host port 10022
 * mounts the host directory C:\my to the container's /root/my directory. This mounted host volume contains the following mandatory items in it's root directory:
-  * your console app you want to serve up over SSH/Telnet (bash, dotnet core, nodejs, pwsh, wine, dosemu, ete)
+  * your console app you want to serve up over SSH/Telnet (bash, dotnet core, nodejs, pwsh, wine, dosemu, etc.)
   * login.sh: this is the shell script that launches your application mounted in /root/my
-  * init.sh: this initializes your application (e.g. compile, npm install, app-specific environment variables)
+  * init.sh: this initializes your application (e.g. compile, npm install)
 
 Refer to the github page for this repository for a sample bash script that is served over SSH/Telnet
 
@@ -51,7 +51,7 @@ Some pros/cons of Telnet vs. SSH:
 * telnet
   * PRO: excellent legacy device support (virtually everything supports telnet)
   * PRO: easily bypasses linux username/password prompt (users are directed to the app once a telnet connection is established)
-  * CON: no encryption (do NOT serve this container in the public. on-premise only)
+  * CON: no encryption (do NOT serve this container in the public internet if using Telnet! on-premise/private cloud only)
 * SSH
   * PRO: encrypted traffic to prevent sniffing
   * CON: requires an SSH client (e.g. JuiceSSH for Android, Termius for iOS, etc) which isn't common on older devices
